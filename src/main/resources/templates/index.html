@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <button onclick="saveReq()">글작성</button> <!--클릭할 경우 saveReq 호출
+    <a href="/board/save">글작성(링크)</a> 이것과 같은 동작. 이 경우는 링크버튼
+    -->
+</body>
+<script>
+
+    const saveReq = () => {
+        location.href = "/board/save"
+    }
+</script>
+</html>

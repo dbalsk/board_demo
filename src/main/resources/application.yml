@@ -1,0 +1,27 @@
+# 서버 포트 설정 (8091과 동시 사용을 위해)
+server:
+  port: 8082
+
+# database 연동 설정 (톰캣이 사용하는 포트가 있음, myspl은 3306)
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_codingrecipe?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: user_codingrecipe
+    password: 1234
+  thymeleaf:
+    cache: false
+
+  # spring data jpa 설정
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      # create할 경우 매번 실행마다 테이블이 새로 만들어짐.
+
+
+  #도커에서 데이터베이스 실행 명령어
+  #docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=root1234 -e MYSQL_DATABASE=db_codingrecipe -d -p 3306:3306 mysql:8
+  #(-e MYSQL_USER=user_codingrecipe -e MYSQL_PASSWORD=1234 //일반사용자 이름,비번)
