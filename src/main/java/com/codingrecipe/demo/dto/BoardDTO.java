@@ -14,15 +14,16 @@ import java.time.LocalDateTime;
 //lombok을 사용하여 자동으로 생성 (getter, setter, 생성자 등)
 public class BoardDTO {
     private Long id;
-    private String boardWriter;
-    private String boardPass;
-    private String boardTitle;
-    private String boardContents;
+    private String boardWriter; //게시글 작성자
+    private String boardPass; //게시글 비밀번호
+    private String boardTitle; //게시글 제목
+    private String boardContents; //게시글 내용
     private int boardHits; //게시글 조회수
     private LocalDateTime boardCreatedTime; //게시글 작성시간
     private LocalDateTime boardUpdatedTime; //게시글 수정시간
 
     public static BoardDTO toBoardDto(BoardEntity boardEntity){
+        //엔티티 -> dto로 변환
         BoardDTO boardDTO = new BoardDTO();
         boardDTO.setId(boardEntity.getId());
         boardDTO.setBoardWriter(boardEntity.getBoardWriter());

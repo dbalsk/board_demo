@@ -20,7 +20,7 @@ public class BoardService {
 
     public void save(BoardDTO boardDTO) {
         BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
-        boardRepository.save(boardEntity); //jparepository에서 상속받은 save 메소드
+        boardRepository.save(boardEntity); //jpaRepository에서 상속받은 save 메소드
     }
 
     public List<BoardDTO> findAll() {
@@ -48,5 +48,16 @@ public class BoardService {
         }else{
             return null;
         }
+    }
+
+    public BoardDTO update(BoardDTO boardDTO) {
+        BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
+        boardRepository.save(boardEntity); //jpa에서 save는 insert와 update에 모두 사용됨. 구분 방법은 id의 사용유무
+        //**id**가 사용될 경우 jpa에서 update로 판단
+        return findById(boardEntity.getId()); //findById를 재사용하여 변환코드 생략하고 해당 id의 dto를 반환.
+    }
+
+    public void delete(Long id) {
+        boardRepository.deleteById(id);
     }
 }

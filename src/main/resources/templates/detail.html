@@ -23,6 +23,10 @@
     <td th:text="${board.boardCreatedTime}"></td>
   </tr>
   <tr>
+    <th>U_date</th>
+    <td th:text="${board.boardUpdatedTime}"></td>
+  </tr>
+  <tr>
     <th>hits</th>
     <td th:text="${board.boardHits}"></td>
   </tr>
@@ -36,7 +40,6 @@
 <button onclick="deleteReq()">삭제</button>
 <!-- 3가지 버튼 구현. 각각의 자바스트립트 함수 호출 -->
 </body>
-<!--모델에 담아온 데이터 활용 -> [[${}]]   (th:inline="javascript"있어야 활용가능) -->
 <script th:inline="javascript">
   const listReq = () => {
       console.log("목록 요청");
@@ -54,3 +57,4 @@
   }
 </script>
 </html>
+<!--모델에 담아온 데이터 활용 -> [[${}]]   (th:inline="javascript"있어야 활용가능) -->
