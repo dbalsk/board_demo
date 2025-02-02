@@ -67,4 +67,10 @@ public class BoardController {
         //위와같이 그냥 리다이렉트해서 상세조회를 해줘도 되지만 조회수에 영향을 주기에 "detail"을 보여주는 방식 사용
     }
 
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id){
+        //게시글 삭제 기능 메소드
+        boardService.delete(id);
+        return "redirect:/board/"; //목록 출력
+    }
 }
