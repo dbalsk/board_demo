@@ -4,6 +4,10 @@ import com.codingrecipe.demo.dto.BoardDTO;
 import com.codingrecipe.demo.entity.BoardEntity;
 import com.codingrecipe.demo.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,5 +63,27 @@ public class BoardService {
 
     public void delete(Long id) {
         boardRepository.deleteById(id);
+    }
+
+    public Page<BoardDTO> paging(Pageable pageable) {
+        int page=pageable.getPageNumber()-1; //사용자가 어떤 페이지를 볼지 결정. (page는 0부터 시작하기에 -1해줌)
+        int pageLimit = 3; //한 페이지에 보여줄 글 개수
+        //한페이지 당 3개의 글을 보여주고 정렬기준은 id 기준으로 내림차순 정렬.     ("id"는 엔티티의 이름)
+        Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));;
+
+        //Page 객체로 선언해야 위와 같은 메소드를 사용할 수 있음.
+        System.out.println("boardEntities.getContent() = " + boardEntities.getContent()); // 요청 페이지에 해당하는 글
+        System.out.println("boardEntities.getTotalElements() = " + boardEntities.getTotalElements()); // 전체 글갯수
+        System.out.println("boardEntities.getNumber() = " + boardEntities.getNumber()); // DB로 요청한 페이지 번호
+        System.out.println("boardEntities.getTotalPages() = " + boardEntities.getTotalPages()); // 전체 페이지 갯수
+        System.out.println("boardEntities.getSize() = " + boardEntities.getSize()); // 한 페이지에 보여지는 글 갯수
+        System.out.println("boardEntities.hasPrevious() = " + boardEntities.hasPrevious()); // 이전 페이지 존재 여부
+        System.out.println("boardEntities.isFirst() = " + boardEntities.isFirst()); // 첫 페이지 여부
+        System.out.println("boardEntities.isLast() = " + boardEntities.isLast()); // 마지막 페이지 여부
+
+        //엔티티의 값을 map 메소드(Page객체의 메소드)를 통해 dto로 옮겨담을 수 있음. (위의 페이지 정보들도 옮겨짐)
+        //목록에는 id, writer, title, hits, createdTime을 보여주면됨. -> 위 필드를 포함하는 DTO 생성자 생성
+        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime()));
+        return boardDTOS;
     }
 }

@@ -9,6 +9,7 @@
     <a href="/board/save">글작성(링크)</a> 이것과 같은 동작. 이 경우는 링크버튼
     -->
     <button onclick="listReq()">글목록</button>
+    <button onclick="pagingReq()">페이징목록</button>
 </body>
 <script>
 
@@ -20,5 +21,8 @@
         location.href = "/board/"
     }
 
+    const pagingReq = () => {
+        location.href = "/board/paging";
+    }
 </script>
 </html>

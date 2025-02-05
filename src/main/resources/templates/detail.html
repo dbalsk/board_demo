@@ -43,7 +43,8 @@
 <script th:inline="javascript">
   const listReq = () => {
       console.log("목록 요청");
-      location.href = "/board/";
+      const page = [[${page}]];
+      location.href = "/board/paging?page=" + page;
   }
   const updateReq = () => {
       console.log("수정 요청");
@@ -57,4 +58,3 @@
   }
 </script>
 </html>
-<!--모델에 담아온 데이터 활용 -> [[${}]]   (th:inline="javascript"있어야 활용가능) -->
