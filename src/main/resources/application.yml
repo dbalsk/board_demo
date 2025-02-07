@@ -20,6 +20,7 @@ spring:
     hibernate:
       ddl-auto: update
       # create할 경우 매번 실행마다 테이블이 새로 만들어짐.
+      # update할 경우 수정만
 
 
   #도커에서 데이터베이스 실행 명령어

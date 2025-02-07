@@ -2,6 +2,7 @@ package com.codingrecipe.demo.dto;
 
 import com.codingrecipe.demo.entity.BoardEntity;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +23,12 @@ public class BoardDTO {
     private LocalDateTime boardCreatedTime; //게시글 작성시간
     private LocalDateTime boardUpdatedTime; //게시글 수정시간
 
+    private MultipartFile boardFile; //save.html에서 컨트롤러로 이동할 때 파일 담는 용도
+    private String originalFileName; // 원본 파일 이름
+    private String storedFileName; //서버 저장용 파일 이름 (중복방지를 위해)
+    private int fileAttached; //파일 첨부 여부(첨부 1, 미첨부 0)
+
+
     public BoardDTO(Long id, String boardWriter, String boardTitle, int boardHits, LocalDateTime boardCreatedTime) {
         this.id = id;
         this.boardWriter = boardWriter;
@@ -41,6 +48,18 @@ public class BoardDTO {
         boardDTO.setBoardHits(boardEntity.getBoardHits());
         boardDTO.setBoardCreatedTime(boardEntity.getCreatedTime());
         boardDTO.setBoardUpdatedTime(boardEntity.getUpdatedTime());
+        if(boardEntity.getFileAttached() == 0){
+            boardDTO.setFileAttached(boardEntity.getFileAttached()); //0
+        }else{
+            boardDTO.setFileAttached(boardEntity.getFileAttached()); //1
+            //추가로 파일이름을 가져와야함. 그런데 파일이름들은 board_file_table(파일엔티티)에 저장해둠.
+            //변환을 위해 가져온 객체는 엔티티 객체이기에 파일이름이 없음.
+            // -> 현재 파일엔티티와 엔티티를 매핑해뒀기에 join 쿼리를 사용하여 가져올 수 있음 (스프링부트 jpa의 장점)
+            //select * from board_table b, board_file_table bf where b.id=bf.board_id and where b.id=?
+            boardDTO.setOriginalFileName(boardEntity.getBoardFileEntityList().get(0).getOriginalFileName());
+            boardDTO.setStoredFileName(boardEntity.getBoardFileEntityList().get(0).getStoredFileName());
+            //자식데이터인 보드엔티티 리스트에 접근하여 해당 인덱스(get(i)) 객체의 파일이름 꺼내오기.
+        }
         return boardDTO;
     }
 }

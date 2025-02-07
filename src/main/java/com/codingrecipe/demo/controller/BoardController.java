@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -24,7 +25,7 @@ public class BoardController {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute BoardDTO boardDTO){
+    public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
         //게시글 작성 기능 메소드
         //@ModelAttribute로 해당 클래스 객체를 매핑해줌. (사용자가 넣어준  폼 데이터를 객체로 바인딩)
         //form태그의 name과 클래스 필드의 이름이 같을 경우 스프링에서 자동으로 setter를 실행하여 넣어줌
