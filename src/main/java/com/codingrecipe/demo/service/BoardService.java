@@ -36,26 +36,27 @@ public class BoardService {
             boardRepository.save(boardEntity); //jpaRepository에서 상속받은 save 메소드
         }else{
             //첨부파일 있음
+            //위의 엔티티는 id를 포함하지 않기에 굳이 저장한 엔티티의 id를 반환하고 그 id로 다시 엔티티를 가져온 것.
             //1. DTO에 담긴 파일을 꺼냄. -> 2. 파일의 이름 가져옴 -> 3. 서버 저장용 이름을 추가 -> 4. 저장경로 설정
             // -> 5. 해당경로에 파일저장 -> 6. board_table에 해당 데이터 save 처리 -> 7. board_file_table에 해당 데이터 save 처리
-            MultipartFile boardFile = boardDTO.getBoardFile(); //1
-            String originalFilename = boardFile.getOriginalFilename(); //2 (사용자가 올린 원본 파일이름)
-            String storedFilename = System.currentTimeMillis() + "_" + originalFilename; //3 (서버 저장용 이름)
-            // ex) 원본: 내사진.jpg -> 서버저장용: 8332423434141_내사진.jpg   (1970이후 지난 밀리세컨드를 반환 -> 중복방지를 위해)
-            String savePath = "C:/springboot_img/" + storedFilename; //4 (실제로 위 경로 생성 필요)
-            boardFile.transferTo(new File(savePath)); //5    (1~5 파일저장)
 
+            //다중파일을 위해 부모객체가 필요하여 아래 3줄을 먼저 수행
             BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO); //엔티티로 변환
-            Long savedId = boardRepository.save(boardEntity).getId(); //엔티티를 저장(save)하고 id를 반환
+            Long savedId = boardRepository.save(boardEntity).getId(); //6 (엔티티를 저장(save)하고 id를 반환)
             BoardEntity board = boardRepository.findById(savedId).get(); //db에서 다시 부모 엔티티를 가져옴
 
-            BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFilename);
-            boardFileRepository.save(boardFileEntity);
+            for(MultipartFile boardFile: boardDTO.getBoardFile()) {
+                //MultipartFile boardFile = boardDTO.getBoardFile(); //1
+                String originalFilename = boardFile.getOriginalFilename(); //2 (사용자가 올린 원본 파일이름)
+                String storedFilename = System.currentTimeMillis() + "_" + originalFilename; //3 (서버 저장용 이름)
+                // ex) 원본: 내사진.jpg -> 서버저장용: 8332423434141_내사진.jpg   (1970이후 지난 밀리세컨드를 반환 -> 중복방지를 위해)
+                String savePath = "C:/springboot_img/" + storedFilename; //4 (실제로 위 경로 생성 필요)
+                boardFile.transferTo(new File(savePath)); //5    (1~5 파일저장)
 
+                BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFilename); //파일엔티티로 변환
+                boardFileRepository.save(boardFileEntity); //7 (파일엔티티를 저장)
+            }
         }
-
-
-
     }
 
     @Transactional //toBoardDto에서 엔티티가 파일엔티티로 접근하고 있기에 트랜잭셔널 필요
