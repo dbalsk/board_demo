@@ -35,10 +35,10 @@ public class CommentService {
     }
 
     public List<CommentDTO> findAll(Long boardId) {
-        //select * from comment_table where board_id=? order by id desc;
-        //게시글(board_id) 기준으로 전체 댓글목록(comment_table)을 가져오고 id 기준으로 내림차순(최신부터) 정렬.
+        //select * from comment_table where board_id=? order by id Asc;
+        //게시글(board_id) 기준으로 전체 댓글목록(comment_table)을 가져오고 id 기준으로 오름차순(첫댓글부터) 정렬.
         BoardEntity boardEntity = boardRepository.findById(boardId).get();
-        List<CommentEntity> commentEntityList = commentRepository.findAllByBoardEntityOrderByIdDesc(boardEntity);
+            List<CommentEntity> commentEntityList = commentRepository.findAllByBoardEntityOrderByIdAsc(boardEntity);
 
         //dto로 변환
         List<CommentDTO> commentDTOList = new ArrayList<>();

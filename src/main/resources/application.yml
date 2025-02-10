@@ -1,4 +1,5 @@
 # 서버 포트 설정 (8091과 동시 사용을 위해)
+# 접속: http://localhost:8082
 server:
   port: 8082
 

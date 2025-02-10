@@ -1,7 +1,9 @@
 package com.codingrecipe.demo.controller;
 
 import com.codingrecipe.demo.dto.BoardDTO;
+import com.codingrecipe.demo.dto.CommentDTO;
 import com.codingrecipe.demo.service.BoardService;
+import com.codingrecipe.demo.service.CommentService;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequestMapping("/board")
 public class BoardController {
     private final BoardService boardService; //생성자 자동생성하여 의존성 주입
+    private final CommentService commentService;
 
     @GetMapping("/save")
     public String saveForm(){
@@ -49,10 +52,13 @@ public class BoardController {
         //게시글 조회수 1 올리고 게시글의 데이터를 가져와서 detail.html에 출력
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
-        model.addAttribute("board", boardDTO);
 
-        //02.05 -> 현재 페이지값을 추가
-        model.addAttribute("page", pageable.getPageNumber());
+        //댓글목록 가져오기
+        List<CommentDTO> commentDTOList = commentService.findAll(id);
+        model.addAttribute("commentList", commentDTOList);
+
+        model.addAttribute("board", boardDTO);
+        model.addAttribute("page", pageable.getPageNumber()); //현재 페이지값을 추가
         return "detail";
     }
 
