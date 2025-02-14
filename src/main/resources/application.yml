@@ -7,8 +7,8 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/db_codingrecipe?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: user_codingrecipe
+    url: jdbc:mysql://localhost:3306/db_board?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: user_board
     password: 1234
   thymeleaf:
     cache: false
@@ -25,5 +25,9 @@ spring:
 
 
   #도커에서 데이터베이스 실행 명령어
-  #docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=root1234 -e MYSQL_DATABASE=db_codingrecipe -d -p 3306:3306 mysql:8
-  #(-e MYSQL_USER=user_codingrecipe -e MYSQL_PASSWORD=1234 //일반사용자 이름,비번)
+  #docker run --name board_demo -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=db_board -e MYSQL_USER=user_board -e MYSQL_PASSWORD=1234 -p 3306:3306 -d mysql:8
+
+  #mysql workbench에서 데이터베이스 실행 명령어
+  #create database db_board;
+  #create user user_board@localhost identified by '1234';
+  #grant all privileges on db_board.* to user_board@localhost;

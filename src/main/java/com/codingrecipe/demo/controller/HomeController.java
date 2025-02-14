@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
-    @GetMapping("/") //기본 주소로 요청
+    @GetMapping("/") //기본페이지 요청메소드
     public String index(){
         return "index";
     }
