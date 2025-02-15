@@ -36,11 +36,11 @@ public class MemberController {
     }
 
     @PostMapping("/member/login")
-    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session){
+    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session){ //세션에 내 정보를 담기위해 사용
         MemberDTO loginResult = memberService.login(memberDTO);
         if(loginResult != null){
             //로그인 성공
-            session.setAttribute("loginEmail", loginResult.getMemberEmail());
+            session.setAttribute("loginEmail", loginResult.getMemberEmail()); //담기
             return "main";
         }else{
             //로그인 실패
@@ -60,5 +60,28 @@ public class MemberController {
         MemberDTO memberDTO = memberService.findById(id);
         model.addAttribute("member", memberDTO);
         return "detail_M";
+    }
+
+    @GetMapping("/member/update")
+    public String updateForm(HttpSession session, Model model){
+        //이메일로 해당 객체 찾아서 가져오기
+        String myEmail = (String) session.getAttribute("loginEmail"); //세션에 담아둔 내 정보를 가져오기
+        MemberDTO memberDTO = memberService.updateForm(myEmail);
+        model.addAttribute("updateMember", memberDTO);
+        return "update_M";
+    }
+
+    @PostMapping("/member/update")
+    public String update(@ModelAttribute MemberDTO memberDTO){
+        memberService.update(memberDTO);
+        //findById가 했던 것처럼 이메일로 객체를 찾아서 detail로 보내도 되지만
+        //리다이렉트하여 다른 컨트롤러 메소드를 사용할 수 있음. (findById 호출하여 detail로 이동.)
+        return "redirect:/member/" + memberDTO.getId();
+    }
+
+    @GetMapping("/member/delete/{id}")
+    public String deleteById(@PathVariable Long id){
+        memberService.deleteById(id);
+        return "redirect:/member/";
     }
 }
