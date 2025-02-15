@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>list_M</title>
+</head>
+<body>
+<h2>list.html</h2>
+<table>
+  <tr>
+    <th>id</th>
+    <th>memberEmail</th>
+    <th>memberPassword</th>
+    <th>memberName</th>
+    <th>상세조회</th>
+    <th>삭제</th>
+  </tr>
+  <tr th:each="member: ${memberList}">
+    <td th:text="${member.id}"></td>
+    <td th:text="${member.memberEmail}"></td>
+    <td th:text="${member.memberPassword}"></td>
+    <td th:text="${member.memberName}"></td>
+    <td>
+      <!--query string (/member?id=1) 방식보다
+       요즘은 rest api (/member/1) 방식이 주로 사용됨. 아래는 rest api는 아니지만 비슷한 방식 -->
+      <a th:href="@{|/member/${member.id}|}">조회</a>
+    </td>
+    <td>
+      <!-- 만약 rest api 방식을 사용한다면 조회와 동일한 주소로 날라가고 delete 메소드를 사용했을 것. -->
+      <a th:href="@{|/member/delete/${member.id}|}">삭제</a>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
