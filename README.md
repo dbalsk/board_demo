@@ -20,11 +20,3 @@
 7. 파일(이미지)첨부하기
    - 단일 파일 첨부
    - 다중 파일 첨부
-8. 댓글 추가 및 목록
-
-## mysql DataBase 계정 생성 및 권한 부여
-```
-create database db_codingrecipe;
-create user user_codingrecipe@localhost identified by '1234';
-grant all privileges on db_codingrecipe.* to user_codingrecipe@localhost;
-```
