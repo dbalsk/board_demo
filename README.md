@@ -32,3 +32,7 @@
 ```
 docker run --name board_demo -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=db_board -e MYSQL_USER=user_board -e MYSQL_PASSWORD=1234 -p 3306:3306 -d mysql:8
 ```
+
+## 참고자료
+[코딩레시피](https://www.youtube.com/watch?v=YshcPPHClR4&list=PLV9zd3otBRt7jmXvwCkmvJ8dH5tR_20c0)
+
