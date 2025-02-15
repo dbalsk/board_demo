@@ -22,6 +22,7 @@ public class MemberController {
         return "save_M";
     }
 
+    //회원가입
     @PostMapping("/member/save")
     public String save(@ModelAttribute MemberDTO memberDTO){
         //System.out.println("memberDTO = " + memberDTO);
@@ -35,6 +36,7 @@ public class MemberController {
         return "login";
     }
 
+    //로그인
     @PostMapping("/member/login")
     public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session){ //세션에 내 정보를 담기위해 사용
         MemberDTO loginResult = memberService.login(memberDTO);
@@ -48,6 +50,7 @@ public class MemberController {
         }
     }
 
+    //목록 조회
     @GetMapping("/member/")
     public String findAll(Model model){ //html로 가져갈 데이터가 있을 때 model 객체를 사용하여 담아갈 수 있음.
         List<MemberDTO> memberDTOList = memberService.findAll();
@@ -55,6 +58,7 @@ public class MemberController {
         return "list_M";
     }
 
+    //상세조회
     @GetMapping("/member/{id}")
     public String findById(@PathVariable Long id, Model model){ //특정 자원을 사용하기에 패스베리어블
         MemberDTO memberDTO = memberService.findById(id);
@@ -62,6 +66,7 @@ public class MemberController {
         return "detail_M";
     }
 
+    //수정 요청
     @GetMapping("/member/update")
     public String updateForm(HttpSession session, Model model){
         //이메일로 해당 객체 찾아서 가져오기
@@ -71,6 +76,7 @@ public class MemberController {
         return "update_M";
     }
 
+    //수정
     @PostMapping("/member/update")
     public String update(@ModelAttribute MemberDTO memberDTO){
         memberService.update(memberDTO);
@@ -79,9 +85,17 @@ public class MemberController {
         return "redirect:/member/" + memberDTO.getId();
     }
 
+    //삭제
     @GetMapping("/member/delete/{id}")
     public String deleteById(@PathVariable Long id){
         memberService.deleteById(id);
         return "redirect:/member/";
+    }
+
+    //로그아웃
+    @GetMapping("/member/logout")
+    public String logout(HttpSession session){
+        session.invalidate(); //세션 무효화
+        return "index";
     }
 }
