@@ -98,4 +98,11 @@ public class MemberController {
         session.invalidate(); //세션 무효화
         return "index";
     }
+
+    //이메일 중복체크
+    @PostMapping("/member/email-check")
+    public @ResponseBody String emailCheck(@RequestParam("memberEmail") String memberEmail){
+        String checkResult = memberService.emailCheck(memberEmail);
+        return checkResult;
+    }
 }
